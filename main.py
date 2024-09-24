@@ -1,8 +1,7 @@
 from openpyxl import load_workbook
 import os
 from openpyxl_image_loader import SheetImageLoader
-import requests
-import cfscrape
+import uuid
 
 
 book = load_workbook(filename=os.path.abspath("prais.xlsx"))
@@ -81,31 +80,8 @@ for i in range(48, 49):
         form_data['age_end'] = age_end
 
 
-    def get_session():
-        session = requests.Session()
-        session.headers = {
-        'Host':'www.artstation.com',
-        'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0)   Gecko/20100101 Firefox/69.0',
-        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language':'ru,en-US;q=0.5',
-        'Accept-Encoding':'gzip, deflate, br',
-        'DNT':'1',
-        'Connection':'keep-alive',
-        'Upgrade-Insecure-Requests':'1',
-        'Pragma':'no-cache',
-        'Cache-Control':'no-cache'}
-        return cfscrape.create_scraper(sess=session)
-
 
     if image:
-        image.save('D:/Prog/Projects/Parser/image.png')
-        img = open('image.png', 'rb')
-        files = {'photo': img}
-        session = get_session()
-        p = session.post('http://127.0.0.1:8000/admin_panel/products/add', data=form_data)
-        img.close()
-        os.remove('D:/Prog/Projects/Parser/image.png')
-    else:
-        session = get_session()
-        p = session.post('http://127.0.0.1:8000/admin_panel/products/add', data=form_data)
+        image.save('D:/Prog/Projects/Parser/image' + str(uuid.uuid1()) + '.png')
+
 
